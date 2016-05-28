@@ -9,11 +9,11 @@
     </parent>
 
     <groupId>com.facebook.presto.hadoop</groupId>
-    <artifactId>hadoop-cdh4</artifactId>
-    <version>0.8</version>
+    <artifactId>hadoop-cdh5</artifactId>
+    <version>0.8-cdh5.5.2</version>
 
-    <name>hadoop-cdh4</name>
-    <description>Shaded version of CDH4 Hadoop for Presto</description>
+    <name>hadoop-cdh5</name>
+    <description>Shaded version of CDH5 Hadoop for Presto</description>
     <url>https://github.com/facebook/presto-hadoop-cdh4</url>
 
     <inceptionYear>2013</inceptionYear>
@@ -41,8 +41,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.targetJdk>1.7</project.build.targetJdk>
         <shadeBase>com.facebook.presto.hadoop.shaded</shadeBase>
-        <dep.hadoop.version>2.0.0-cdh4.7.1</dep.hadoop.version>
-        <dep.slf4j.version>1.6.6</dep.slf4j.version>
+        <dep.hadoop.version>2.6.0-cdh5.5.2</dep.hadoop.version>
+        <dep.slf4j.version>1.7.5</dep.slf4j.version>
     </properties>
 
     <repositories>
@@ -174,6 +174,18 @@
                     <groupId>org.slf4j</groupId>
                     <artifactId>slf4j-log4j12</artifactId>
                 </exclusion>
+                <exclusion>
+                    <artifactId>commons-math3</artifactId>
+                    <groupId>org.apache.commons</groupId>
+                </exclusion>
+                <exclusion>
+                    <groupId>net.java.dev.jets3t</groupId>
+                    <artifactId>jets3t</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.httpcomponents</groupId>
+                    <artifactId>httpclient</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 
@@ -243,6 +255,52 @@
                     <groupId>xmlenc</groupId>
                     <artifactId>xmlenc</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>io.netty</groupId>
+                    <artifactId>netty-all</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>io.netty</groupId>
+                    <artifactId>netty</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.fusesource.leveldbjni</groupId>
+                    <artifactId>leveldbjni-all</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-mapreduce-client-common</artifactId>
+            <version>${dep.hadoop.version}</version>
+            <scope>runtime</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.hadoop</groupId>
+                    <artifactId>hadoop-yarn-common</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.hadoop</groupId>
+                    <artifactId>hadoop-yarn-client</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.hadoop</groupId>
+                    <artifactId>hadoop-yarn-server-common</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.google.inject.extensions</groupId>
+                    <artifactId>guice-servlet</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>io.netty</groupId>
+                    <artifactId>netty</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 
@@ -285,7 +343,7 @@
                     <artifactId>guice-servlet</artifactId>
                 </exclusion>
                 <exclusion>
-                    <groupId>org.jboss.netty</groupId>
+                    <groupId>io.netty</groupId>
                     <artifactId>netty</artifactId>
                 </exclusion>
                 <exclusion>
@@ -560,4 +618,37 @@
             </plugins>
         </pluginManagement>
     </build>
+    <profiles>
+        <profile>
+            <id>ourplat-repo</id>
+            <distributionManagement>
+                <repository>
+                    <id>ourplat.nexus</id>
+                    <layout>default</layout>
+                    <url>http://maven.ourplat.net/content/repositories/thirdparty/</url>
+                </repository>
+                <snapshotRepository>
+                    <id>ourplat.nexus</id>
+                    <layout>default</layout>
+                    <url>http://maven.ourplat.net/content/repositories/thirdparty-snapshots/</url>
+                </snapshotRepository>
+            </distributionManagement>
+        </profile>
+
+        <profile>
+            <id>artifact-repo</id>
+            <distributionManagement>
+                <repository>
+                    <id>jtzh65</id>
+                    <name>jtzh65-releases</name>
+                    <url>http://jtzh65:58200/artifactory/ext-release-local</url>
+                </repository>
+                <snapshotRepository>
+                    <id>jtzh65</id>
+                    <name>jtzh65-snapshots</name>
+                    <url>http://jtzh65:58200/artifactory/ext-snapshot-local</url>
+                </snapshotRepository>
+            </distributionManagement>
+        </profile>
+    </profiles>
 </project>
